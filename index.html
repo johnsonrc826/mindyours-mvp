@@ -1,0 +1,1665 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>MindYours – Financial Empowerment MVP</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <style>
+    :root {
+      --bg: #050816;
+      --bg-alt: #0b1020;
+      --card: #111827;
+      --card-alt: #020617;
+      --accent: #38bdf8;
+      --accent-soft: rgba(56,189,248,0.15);
+      --accent-2: #22c55e;
+      --accent-3: #fbbf24;
+      --danger: #f97373;
+      --text: #e5e7eb;
+      --muted: #9ca3af;
+      --border: #1f2937;
+      --radius-lg: 18px;
+      --radius-xl: 24px;
+      --shadow-soft: 0 18px 40px rgba(15,23,42,0.75);
+      --shadow-sm: 0 10px 25px rgba(15,23,42,0.65);
+      --transition: 180ms ease-out;
+      --font-sans: system-ui, -apple-system, BlinkMacSystemFont, "SF Pro Text",
+        "Inter", "Segoe UI", sans-serif;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: var(--font-sans);
+      background: radial-gradient(circle at top left, #1f2937 0, #020617 50%, #000 100%);
+      color: var(--text);
+      min-height: 100vh;
+      display: flex;
+      justify-content: center;
+      padding: 24px;
+    }
+
+    .app-shell {
+      width: 100%;
+      max-width: 1200px;
+      background: linear-gradient(135deg, rgba(15,23,42,0.85), rgba(15,23,42,0.95));
+      border-radius: 32px;
+      border: 1px solid rgba(148,163,184,0.18);
+      box-shadow: var(--shadow-soft);
+      padding: 20px 22px 26px;
+      backdrop-filter: blur(28px);
+      display: flex;
+      flex-direction: column;
+      gap: 18px;
+    }
+
+    /* Header */
+    .app-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 18px;
+    }
+
+    .brand-block {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .brand-icon {
+      width: 40px;
+      height: 40px;
+      border-radius: 14px;
+      background: radial-gradient(circle at 30% 20%, #38bdf8, #22c55e 55%, #0f172a 100%);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 900;
+      font-size: 20px;
+      box-shadow: 0 0 40px rgba(56,189,248,0.5);
+      color: #0b1120;
+    }
+
+    .brand-text h1 {
+      font-size: 20px;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+    }
+
+    .brand-text p {
+      font-size: 11px;
+      color: var(--muted);
+      text-transform: uppercase;
+      letter-spacing: 0.16em;
+      margin-top: 1px;
+    }
+
+    .tier-pill {
+      padding: 6px 12px;
+      border-radius: 999px;
+      border: 1px solid rgba(148,163,184,0.4);
+      font-size: 11px;
+      text-transform: uppercase;
+      letter-spacing: 0.16em;
+      color: var(--muted);
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .tier-dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: radial-gradient(circle at 30% 30%, #4ade80, #15803d);
+    }
+
+    /* Top row: profile + score + quick add */
+    .top-row {
+      display: grid;
+      grid-template-columns: minmax(0, 2.2fr) minmax(0, 1.8fr) minmax(0, 2fr);
+      gap: 14px;
+      flex-wrap: wrap;
+    }
+
+    .card {
+      background: radial-gradient(circle at top left, rgba(15,23,42,0.9), rgba(15,23,42,0.98));
+      border-radius: var(--radius-lg);
+      border: 1px solid var(--border);
+      padding: 14px 14px 12px;
+      box-shadow: var(--shadow-sm);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .card::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background: radial-gradient(circle at top right, rgba(56,189,248,0.12), transparent 55%);
+      opacity: 0.8;
+      pointer-events: none;
+    }
+
+    .card-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 8px;
+      position: relative;
+      z-index: 1;
+    }
+
+    .card-title {
+      font-size: 13px;
+      color: var(--muted);
+      text-transform: uppercase;
+      letter-spacing: 0.16em;
+    }
+
+    .tag {
+      font-size: 10px;
+      border-radius: 999px;
+      padding: 4px 8px;
+      border: 1px solid rgba(148,163,184,0.35);
+      color: var(--muted);
+      text-transform: uppercase;
+      letter-spacing: 0.12em;
+    }
+
+    .card-main {
+      position: relative;
+      z-index: 1;
+    }
+
+    .profile-name-input {
+      width: 100%;
+      background: linear-gradient(135deg, #020617, #020617);
+      border-radius: 999px;
+      border: 1px solid rgba(148,163,184,0.5);
+      padding: 8px 11px;
+      color: var(--text);
+      font-size: 13px;
+      margin-bottom: 7px;
+    }
+
+    .row {
+      display: flex;
+      gap: 8px;
+      margin-bottom: 6px;
+      flex-wrap: wrap;
+    }
+
+    .pill-select {
+      flex: 1;
+      padding: 7px 9px;
+      border-radius: 999px;
+      border: 1px solid rgba(148,163,184,0.45);
+      background: #020617;
+      color: var(--text);
+      font-size: 12px;
+    }
+
+    .score-number {
+      font-size: 26px;
+      font-weight: 700;
+    }
+
+    .score-label {
+      font-size: 11px;
+      color: var(--muted);
+      text-transform: uppercase;
+      letter-spacing: 0.16em;
+    }
+
+    .score-bar {
+      height: 6px;
+      border-radius: 999px;
+      background: rgba(15,23,42,0.9);
+      border: 1px solid rgba(31,41,55,1);
+      overflow: hidden;
+      margin-top: 9px;
+    }
+
+    .score-bar-inner {
+      height: 100%;
+      background: linear-gradient(90deg, #22c55e, #38bdf8, #a855f7);
+      width: 40%;
+      transition: width 220ms ease-out;
+    }
+
+    .chip-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+      margin-top: 8px;
+    }
+
+    .chip {
+      font-size: 11px;
+      padding: 4px 7px;
+      border-radius: 999px;
+      background: rgba(15,23,42,0.9);
+      border: 1px solid rgba(31,41,55,0.9);
+      color: var(--muted);
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+    }
+
+    .chip-dot {
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background: var(--accent-2);
+    }
+
+    .chip-dot-alt {
+      background: var(--accent-3);
+    }
+
+    .chip-dot-danger {
+      background: var(--danger);
+    }
+
+    .stat-main {
+      display: flex;
+      justify-content: space-between;
+      gap: 10px;
+      align-items: flex-end;
+    }
+
+    .stat-block {
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
+    }
+
+    .stat-label {
+      font-size: 11px;
+      color: var(--muted);
+      text-transform: uppercase;
+      letter-spacing: 0.16em;
+    }
+
+    .stat-value {
+      font-size: 18px;
+      font-weight: 600;
+    }
+
+    .stat-subtext {
+      font-size: 11px;
+      color: var(--muted);
+    }
+
+    .legend-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+      margin-top: 10px;
+      font-size: 11px;
+      color: var(--muted);
+    }
+
+    .legend-box {
+      width: 12px;
+      height: 8px;
+      border-radius: 4px;
+      display: inline-block;
+      margin-right: 4px;
+    }
+
+    .legend-ess {
+      background: #22c55e;
+    }
+
+    .legend-save {
+      background: #38bdf8;
+    }
+
+    .legend-debt {
+      background: #f97373;
+    }
+
+    .legend-play {
+      background: #fbbf24;
+    }
+
+    .tiny-label {
+      font-size: 11px;
+      color: var(--muted);
+      text-transform: uppercase;
+      letter-spacing: 0.14em;
+      margin-bottom: 4px;
+    }
+
+    .input,
+    select {
+      width: 100%;
+      background: #020617;
+      border-radius: 999px;
+      border: 1px solid rgba(148,163,184,0.5);
+      padding: 7px 9px;
+      color: var(--text);
+      font-size: 12px;
+      margin-bottom: 6px;
+    }
+
+    .input::placeholder {
+      color: #6b7280;
+    }
+
+    .btn {
+      border: none;
+      outline: none;
+      border-radius: 999px;
+      padding: 7px 12px;
+      font-size: 12px;
+      font-weight: 500;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      transition: transform var(--transition), box-shadow var(--transition),
+        background-color var(--transition), border-color var(--transition);
+      white-space: nowrap;
+    }
+
+    .btn-primary {
+      background: linear-gradient(135deg,#22c55e,#38bdf8);
+      color: #0b1120;
+      box-shadow: 0 12px 30px rgba(56,189,248,0.55);
+    }
+
+    .btn-primary:hover {
+      transform: translateY(-1px);
+      box-shadow: 0 16px 35px rgba(56,189,248,0.75);
+    }
+
+    .btn-soft {
+      background: rgba(15,23,42,0.9);
+      border: 1px solid rgba(148,163,184,0.4);
+      color: var(--muted);
+    }
+
+    .btn-soft:hover {
+      border-color: var(--accent);
+      color: var(--text);
+    }
+
+    .btn-danger {
+      background: rgba(127,29,29,0.96);
+      color: #fecaca;
+      border: 1px solid rgba(248,113,113,0.8);
+    }
+
+    .btn-danger:hover {
+      background: rgba(127,29,29,1);
+    }
+
+    .btn-sm {
+      padding: 5px 10px;
+      font-size: 11px;
+    }
+
+    .btn-icon {
+      width: 20px;
+      height: 20px;
+      border-radius: 999px;
+      background: rgba(15,23,42,0.9);
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 12px;
+    }
+
+    .btn-row {
+      display: flex;
+      gap: 7px;
+      flex-wrap: wrap;
+    }
+
+    /* Main layout: left = flows, right = rules & transactions */
+    .main-row {
+      display: grid;
+      grid-template-columns: minmax(0, 2.2fr) minmax(0, 2.1fr);
+      gap: 14px;
+      margin-top: 4px;
+    }
+
+    .section-title {
+      font-size: 13px;
+      color: var(--muted);
+      text-transform: uppercase;
+      letter-spacing: 0.16em;
+      margin-bottom: 8px;
+    }
+
+    .stack {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .subcard {
+      background: radial-gradient(circle at top left, #020617, #020617);
+      border-radius: 16px;
+      border: 1px solid rgba(31,41,55,1);
+      padding: 10px 11px 9px;
+    }
+
+    .subcard-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 6px;
+    }
+
+    .subcard-title {
+      font-size: 11px;
+      color: var(--muted);
+      text-transform: uppercase;
+      letter-spacing: 0.16em;
+    }
+
+    .bar-chart {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      align-items: flex-end;
+      gap: 6px;
+      height: 80px;
+      margin-top: 6px;
+    }
+
+    .bar {
+      border-radius: 999px;
+      background: #111827;
+      border: 1px solid #1f2937;
+      overflow: hidden;
+      display: flex;
+      align-items: flex-end;
+      justify-content: stretch;
+    }
+
+    .bar-inner {
+      width: 100%;
+      border-radius: 999px;
+      transition: height 220ms ease-out;
+    }
+
+    .bar-caption {
+      font-size: 10px;
+      color: var(--muted);
+      text-align: center;
+      margin-top: 4px;
+      text-transform: uppercase;
+      letter-spacing: 0.14em;
+    }
+
+    .pill-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 4px;
+      margin-top: 6px;
+    }
+
+    .pill {
+      font-size: 10px;
+      padding: 3px 7px;
+      border-radius: 999px;
+      background: rgba(15,23,42,1);
+      border: 1px solid rgba(55,65,81,1);
+      color: var(--muted);
+      text-transform: uppercase;
+      letter-spacing: 0.12em;
+    }
+
+    .pill.highlight {
+      border-color: #22c55e;
+      color: #bbf7d0;
+    }
+
+    .pill.warn {
+      border-color: #f97373;
+      color: #fecaca;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 4px;
+      font-size: 11px;
+    }
+
+    th, td {
+      padding: 5px 4px;
+      text-align: left;
+      border-bottom: 1px solid rgba(31,41,55,0.9);
+    }
+
+    th {
+      font-size: 10px;
+      text-transform: uppercase;
+      letter-spacing: 0.14em;
+      color: var(--muted);
+    }
+
+    tr:last-child td {
+      border-bottom: none;
+    }
+
+    .badge {
+      font-size: 10px;
+      border-radius: 999px;
+      padding: 3px 6px;
+      text-transform: uppercase;
+      letter-spacing: 0.12em;
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+    }
+
+    .badge-income {
+      background: rgba(22,163,74,0.15);
+      color: #bbf7d0;
+      border: 1px solid rgba(22,163,74,0.7);
+    }
+
+    .badge-expense {
+      background: rgba(220,38,38,0.12);
+      color: #fecaca;
+      border: 1px solid rgba(220,38,38,0.7);
+    }
+
+    .badge-transfer {
+      background: rgba(37,99,235,0.14);
+      color: #bfdbfe;
+      border: 1px solid rgba(37,99,235,0.9);
+    }
+
+    .text-right {
+      text-align: right;
+    }
+
+    .text-muted {
+      color: var(--muted);
+    }
+
+    .mono {
+      font-family: "SF Mono","JetBrains Mono",ui-monospace,Menlo,monospace;
+    }
+
+    .text-danger {
+      color: #fecaca;
+    }
+
+    .spacer {
+      height: 2px;
+    }
+
+    .helper-text {
+      font-size: 10px;
+      color: var(--muted);
+      margin-top: 2px;
+    }
+
+    .note {
+      font-size: 10px;
+      color: var(--muted);
+      margin-top: 6px;
+    }
+
+    .note strong {
+      color: var(--accent);
+    }
+
+    .settings-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 8px;
+      margin-top: 6px;
+    }
+
+    .export-box {
+      font-size: 10px;
+      padding: 6px 8px;
+      border-radius: 12px;
+      border: 1px dashed rgba(148,163,184,0.6);
+      background: rgba(15,23,42,0.9);
+      color: var(--muted);
+      word-break: break-all;
+      max-height: 100px;
+      overflow: auto;
+    }
+
+    .small-link {
+      font-size: 10px;
+      color: var(--accent);
+      text-decoration: underline;
+      cursor: pointer;
+    }
+
+    .flag-pill {
+      padding: 3px 6px;
+      border-radius: 999px;
+      background: rgba(15,23,42,1);
+      border: 1px solid rgba(55,65,81,1);
+      font-size: 10px;
+      color: var(--muted);
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+    }
+
+    .flag-pill.good {
+      border-color: #22c55e;
+      color: #bbf7d0;
+    }
+
+    .flag-pill.warn {
+      border-color: #f97373;
+      color: #fecaca;
+    }
+
+    .dot {
+      width: 6px;
+      height: 6px;
+      border-radius: 999px;
+      background: #22c55e;
+    }
+
+    .dot.warn {
+      background: #f97373;
+    }
+
+    .dot.mid {
+      background: #fbbf24;
+    }
+
+    .pill-small {
+      font-size: 10px;
+      padding: 3px 6px;
+      border-radius: 999px;
+      border: 1px solid rgba(55,65,81,1);
+      background: rgba(15,23,42,1);
+      color: var(--muted);
+    }
+
+    .pill-small strong {
+      color: #e5e7eb;
+    }
+
+    .scrollable {
+      max-height: 162px;
+      overflow: auto;
+    }
+
+    .fade-top {
+      mask-image: linear-gradient(to bottom, transparent 0, black 22px);
+    }
+
+    .fade-bottom {
+      mask-image: linear-gradient(to top, transparent 0, black 22px);
+    }
+
+    @media (max-width: 900px) {
+      body {
+        padding: 12px;
+      }
+      .app-shell {
+        padding: 16px 14px 18px;
+        border-radius: 22px;
+      }
+      .app-header {
+        flex-direction: column;
+        align-items: flex-start;
+      }
+      .top-row {
+        grid-template-columns: minmax(0, 1fr);
+      }
+      .main-row {
+        grid-template-columns: minmax(0, 1fr);
+      }
+    }
+
+    @media (max-width: 600px) {
+      .brand-text h1 {
+        font-size: 18px;
+      }
+      .brand-text p {
+        font-size: 10px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="app-shell">
+    <!-- HEADER -->
+    <header class="app-header">
+      <div class="brand-block">
+        <div class="brand-icon">MY</div>
+        <div class="brand-text">
+          <h1>MindYours</h1>
+          <p>Foundation Builder · Wealth Builder · Community Catalyst</p>
+        </div>
+      </div>
+      <div class="btn-row">
+        <div class="tier-pill" id="tierSummaryPill">
+          <span class="tier-dot"></span>
+          <span id="tierSummaryText">Foundation Builder</span>
+        </div>
+        <button class="btn btn-soft btn-sm" id="btnReset">
+          <span class="btn-icon">⟳</span> Reset demo data
+        </button>
+      </div>
+    </header>
+
+    <!-- TOP ROW: Profile / Score / Quick add -->
+    <section class="top-row">
+      <!-- PROFILE / TIER -->
+      <div class="card">
+        <div class="card-header">
+          <span class="card-title">Profile & Tier</span>
+          <span class="tag">Step 1 · Setup</span>
+        </div>
+        <div class="card-main">
+          <input id="userNameInput" class="profile-name-input" placeholder="Your name (e.g., Richard)" />
+          <div class="row">
+            <select id="tierSelect" class="pill-select">
+              <option value="foundation">Foundation Builder · Getting stable</option>
+              <option value="wealth">Wealth Builder · Growing assets</option>
+              <option value="catalyst">Community Catalyst · Group / Family</option>
+            </select>
+          </div>
+          <div class="row">
+            <div style="flex:1">
+              <div class="tiny-label">Monthly income target ($)</div>
+              <input id="incomeTargetInput" class="input" type="number" min="0" step="50" placeholder="e.g., 4000">
+            </div>
+            <div style="flex:1">
+              <div class="tiny-label">Savings + Debt % goal</div>
+              <input id="savingsTargetInput" class="input" type="number" min="0" max="100" step="1" placeholder="e.g., 30">
+            </div>
+          </div>
+          <div class="chip-row">
+            <span class="chip"><span class="chip-dot"></span><span id="chipAutoRule">50/20/20/10 autopilot</span></span>
+            <span class="chip"><span class="chip-dot-alt"></span><span id="chipBillStatus">Bills covered: -</span></span>
+            <span class="chip"><span class="chip-dot-danger"></span><span id="chipDebtStatus">Debt plan: -</span></span>
+          </div>
+        </div>
+      </div>
+
+      <!-- FOUNDATION SCORE -->
+      <div class="card">
+        <div class="card-header">
+          <span class="card-title">Foundation Score</span>
+          <span class="tag">Step 2 · Health</span>
+        </div>
+        <div class="card-main">
+          <div class="stat-main">
+            <div class="stat-block">
+              <div class="score-number" id="foundationScore">72</div>
+              <div class="score-label" id="foundationLabel">solid foundation</div>
+            </div>
+            <div class="stat-block">
+              <div class="stat-label">Savings rate</div>
+              <div class="stat-value mono" id="savingsRateText">--%</div>
+              <div class="stat-subtext" id="savingsRateSub">of monthly income</div>
+            </div>
+          </div>
+          <div class="score-bar">
+            <div class="score-bar-inner" id="scoreBarInner"></div>
+          </div>
+          <div class="legend-row">
+            <span><span class="legend-box legend-ess"></span> Essentials</span>
+            <span><span class="legend-box legend-save"></span> Save / Invest</span>
+            <span><span class="legend-box legend-debt"></span> Debt</span>
+            <span><span class="legend-box legend-play"></span> Play / Giving</span>
+          </div>
+          <div class="pill-row">
+            <span class="pill-small"><strong id="essentialsPctLabel">50%</strong> essentials</span>
+            <span class="pill-small"><strong id="savePctLabel">20%</strong> save</span>
+            <span class="pill-small"><strong id="debtPctLabel">20%</strong> debt</span>
+            <span class="pill-small"><strong id="playPctLabel">10%</strong> play</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- QUICK ADD TRANSACTION -->
+      <div class="card">
+        <div class="card-header">
+          <span class="card-title">Quick Capture</span>
+          <span class="tag">Step 3 · Daily Moves</span>
+        </div>
+        <div class="card-main">
+          <div class="row">
+            <select id="quickType" class="pill-select">
+              <option value="income">Income</option>
+              <option value="expense">Expense</option>
+              <option value="transfer">Transfer</option>
+            </select>
+            <input id="quickAmount" class="input" type="number" min="0" step="1" placeholder="Amount" />
+          </div>
+          <div class="row">
+            <select id="quickCategory" class="pill-select"></select>
+            <input id="quickNote" class="input" placeholder="Note (rent, Lyft, Instacart...)" />
+          </div>
+          <div class="row">
+            <select id="quickAccount" class="pill-select"></select>
+          </div>
+          <div class="btn-row">
+            <button class="btn btn-primary btn-sm" id="btnQuickAdd">
+              <span class="btn-icon">＋</span> Add move
+            </button>
+            <span class="helper-text">Use this like a money journal – capture every move in under 10 seconds.</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- MAIN SECTION -->
+    <section class="main-row">
+      <!-- LEFT: Flows & Accounts -->
+      <div class="stack">
+        <!-- CASHFLOW SNAPSHOT -->
+        <div class="subcard">
+          <div class="subcard-header">
+            <div>
+              <div class="subcard-title">Monthly Cash Flow</div>
+              <div class="helper-text" id="monthLabel">Current month snapshot</div>
+            </div>
+            <div class="flag-pill" id="cashFlowFlag">
+              <span class="dot"></span><span id="cashFlowFlagText">On plan</span>
+            </div>
+          </div>
+          <div class="bar-chart">
+            <div>
+              <div class="bar">
+                <div class="bar-inner" id="barIncome" style="background:#22c55e;height:40%;"></div>
+              </div>
+              <div class="bar-caption">Income</div>
+            </div>
+            <div>
+              <div class="bar">
+                <div class="bar-inner" id="barEssentials" style="background:#64748b;height:30%;"></div>
+              </div>
+              <div class="bar-caption">Essentials</div>
+            </div>
+            <div>
+              <div class="bar">
+                <div class="bar-inner" id="barSavings" style="background:#38bdf8;height:20%;"></div>
+              </div>
+              <div class="bar-caption">Save</div>
+            </div>
+            <div>
+              <div class="bar">
+                <div class="bar-inner" id="barDebt" style="background:#f97373;height:10%;"></div>
+              </div>
+              <div class="bar-caption">Debt</div>
+            </div>
+          </div>
+          <div class="pill-row">
+            <span class="pill" id="netFlowPill">Net cashflow: --</span>
+            <span class="pill" id="runwayPill">Runway: -- months</span>
+            <span class="pill" id="autoPilotPill">Autopilot: active</span>
+          </div>
+        </div>
+
+        <!-- ACCOUNTS TABLE -->
+        <div class="subcard">
+          <div class="subcard-header">
+            <div class="subcard-title">Accounts</div>
+            <div class="btn-row">
+              <button class="btn btn-soft btn-sm" id="btnAddAccount">
+                <span class="btn-icon">＋</span> Account
+              </button>
+            </div>
+          </div>
+          <div class="scrollable fade-bottom">
+            <table id="accountsTable">
+              <thead>
+                <tr>
+                  <th>Name</th>
+                  <th>Type</th>
+                  <th class="text-right">Balance</th>
+                </tr>
+              </thead>
+              <tbody></tbody>
+            </table>
+          </div>
+          <div class="note">Tip: Start with at least a <strong>Spending</strong> account, a <strong>High-yield Savings</strong> account, and a <strong>Debt</strong> account for each loan you’re focused on.</div>
+        </div>
+      </div>
+
+      <!-- RIGHT: Rules & Transactions -->
+      <div class="stack">
+        <!-- ALLOCATION RULES -->
+        <div class="subcard">
+          <div class="subcard-header">
+            <div class="subcard-title">Autopilot Rules</div>
+            <div class="btn-row">
+              <button class="btn btn-soft btn-sm" id="btnUpdateRules">Apply 50/20/20/10</button>
+            </div>
+          </div>
+          <div class="row">
+            <input id="ruleEssentials" class="input" type="number" min="0" max="100" step="1" placeholder="Essentials %" />
+            <input id="ruleSavings" class="input" type="number" min="0" max="100" step="1" placeholder="Save/Invest %" />
+            <input id="ruleDebt" class="input" type="number" min="0" max="100" step="1" placeholder="Debt %" />
+            <input id="rulePlay" class="input" type="number" min="0" max="100" step="1" placeholder="Play/Giving %" />
+          </div>
+          <div class="settings-row">
+            <div>
+              <div class="helper-text">Rules must add up to 100%. These power your “MindYours autopilot”.</div>
+              <div class="helper-text"><span id="ruleSumText">Current: 100%</span></div>
+            </div>
+            <div class="btn-row">
+              <button class="btn btn-soft btn-sm" id="btnSimulateAllocation">Simulate on income</button>
+            </div>
+          </div>
+          <div class="pill-row" id="allocationPreviewRow"></div>
+        </div>
+
+        <!-- TRANSACTIONS -->
+        <div class="subcard">
+          <div class="subcard-header">
+            <div class="subcard-title">Recent Moves</div>
+            <div class="btn-row">
+              <button class="btn btn-soft btn-sm" id="btnExport">
+                Export JSON
+              </button>
+            </div>
+          </div>
+          <div class="scrollable fade-top" id="transactionsContainer">
+            <table id="transactionsTable">
+              <thead>
+                <tr>
+                  <th>Date</th>
+                  <th>Type</th>
+                  <th>Category</th>
+                  <th>Note</th>
+                  <th class="text-right">Amount</th>
+                </tr>
+              </thead>
+              <tbody></tbody>
+            </table>
+          </div>
+          <div class="export-box" id="exportBox" style="display:none;"></div>
+          <div class="note">
+            Use this log in meetings with students, families, or partners. You can copy the exported JSON into a Google Sheet, Notion, or a backend later.
+          </div>
+        </div>
+
+        <!-- SETTINGS / RESET -->
+        <div class="subcard">
+          <div class="subcard-header">
+            <div class="subcard-title">Session</div>
+            <div class="btn-row">
+              <button class="btn btn-danger btn-sm" id="btnHardReset">
+                <span class="btn-icon">⚠</span> Wipe all data
+              </button>
+            </div>
+          </div>
+          <div class="helper-text">
+            Data is stored locally in your browser only using <span class="mono">localStorage</span>.
+            Safe to demo MindYours without any server setup.
+          </div>
+        </div>
+      </div>
+    </section>
+  </div>
+
+  <script>
+    /******************************************************
+     * MindYours MVP – Single-file front-end
+     * Local only, no backend – perfect for GitHub Pages demo
+     ******************************************************/
+    const STORAGE_KEY = "mindYoursMVPv1";
+
+    const categories = [
+      { id: "salary", label: "Salary / Paycheck", type: "income" },
+      { id: "side_hustle", label: "Side Hustle", type: "income" },
+      { id: "rent", label: "Rent / Mortgage", type: "expense", group: "essentials" },
+      { id: "groceries", label: "Groceries", type: "expense", group: "essentials" },
+      { id: "transport", label: "Transit / Gas / Lyft", type: "expense", group: "essentials" },
+      { id: "utilities", label: "Utilities / Phone / Wifi", type: "expense", group: "essentials" },
+      { id: "debt", label: "Debt Payment", type: "expense", group: "debt" },
+      { id: "invest", label: "Investing / ETF / Roth", type: "expense", group: "savings" },
+      { id: "savings", label: "Emergency Fund", type: "expense", group: "savings" },
+      { id: "fun", label: "Fun / Going out", type: "expense", group: "play" },
+      { id: "giving", label: "Giving / Family help", type: "expense", group: "play" },
+    ];
+
+    const defaultState = () => ({
+      user: {
+        name: "Guest",
+        tier: "foundation",
+        incomeTarget: 4000,
+        savingsTargetPct: 30,
+      },
+      rules: {
+        essentials: 50,
+        savings: 20,
+        debt: 20,
+        play: 10,
+      },
+      accounts: [
+        { id: "spend", name: "Spending", type: "Checking", balance: 800 },
+        { id: "savings", name: "High-yield Savings", type: "Savings", balance: 1500 },
+        { id: "debt_cc", name: "Credit Card Focus", type: "Debt", balance: -1200 },
+      ],
+      transactions: [
+        {
+          id: "t1",
+          date: todayISO(),
+          type: "income",
+          categoryId: "salary",
+          amount: 2500,
+          note: "Paycheck",
+          accountId: "spend",
+        },
+        {
+          id: "t2",
+          date: todayISO(),
+          type: "expense",
+          categoryId: "rent",
+          amount: 1200,
+          note: "Rent",
+          accountId: "spend",
+        },
+        {
+          id: "t3",
+          date: todayISO(),
+          type: "expense",
+          categoryId: "groceries",
+          amount: 220,
+          note: "Groceries",
+          accountId: "spend",
+        },
+        {
+          id: "t4",
+          date: todayISO(),
+          type: "expense",
+          categoryId: "debt",
+          amount: 150,
+          note: "Credit card payment",
+          accountId: "debt_cc",
+        },
+        {
+          id: "t5",
+          date: todayISO(),
+          type: "expense",
+          categoryId: "invest",
+          amount: 200,
+          note: "ETF",
+          accountId: "savings",
+        },
+      ],
+    });
+
+    let state = loadState();
+
+    /************ Utility ************/
+    function todayISO() {
+      const d = new Date();
+      return d.toISOString().slice(0, 10);
+    }
+
+    function saveState() {
+      try {
+        localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
+      } catch (e) {
+        console.error("Unable to save state:", e);
+      }
+    }
+
+    function loadState() {
+      try {
+        const raw = localStorage.getItem(STORAGE_KEY);
+        if (!raw) return defaultState();
+        const parsed = JSON.parse(raw);
+        // minimal sanity check
+        if (!parsed.user || !parsed.accounts || !parsed.transactions) {
+          return defaultState();
+        }
+        return parsed;
+      } catch (e) {
+        console.error("Unable to load state:", e);
+        return defaultState();
+      }
+    }
+
+    function hardReset() {
+      localStorage.removeItem(STORAGE_KEY);
+      state = defaultState();
+      renderAll();
+    }
+
+    function softResetDemo() {
+      state = defaultState();
+      saveState();
+      renderAll();
+    }
+
+    function formatMoney(num) {
+      if (isNaN(num)) return "--";
+      const sign = num < 0 ? "-" : "";
+      const val = Math.abs(num).toFixed(0);
+      return sign + "$" + Number(val).toLocaleString();
+    }
+
+    function calcMonthlyStats() {
+      const tx = state.transactions;
+      let income = 0;
+      let expense = 0;
+      let essentials = 0;
+      let savings = 0;
+      let debt = 0;
+
+      for (const t of tx) {
+        if (t.type === "income") {
+          income += t.amount;
+        } else if (t.type === "expense") {
+          expense += t.amount;
+          const cat = categories.find(c => c.id === t.categoryId);
+          if (cat) {
+            if (cat.group === "essentials") essentials += t.amount;
+            if (cat.group === "savings") savings += t.amount;
+            if (cat.group === "debt") debt += t.amount;
+          }
+        }
+      }
+      const net = income - expense;
+      const savingsPlusDebt = savings + debt;
+      const savingsRate = income > 0 ? (savingsPlusDebt / income) * 100 : 0;
+
+      return {
+        income,
+        expense,
+        essentials,
+        savings,
+        debt,
+        net,
+        savingsRate,
+      };
+    }
+
+    function calcFoundationScore(stats) {
+      const { income, expense, savingsRate } = stats;
+      if (income <= 0) return 40;
+
+      let score = 50;
+      if (savingsRate >= 20) score += 15;
+      if (savingsRate >= 30) score += 10;
+      if (income - expense > income * 0.1) score += 10;
+      if (expense > income) score -= 10;
+      if (savingsRate < 10) score -= 10;
+
+      score = Math.max(10, Math.min(100, Math.round(score)));
+      return score;
+    }
+
+    function foundationLabel(score) {
+      if (score >= 85) return "wealth mode";
+      if (score >= 70) return "solid foundation";
+      if (score >= 55) return "stabilizing";
+      return "rebuild mode";
+    }
+
+    function tierText(tier) {
+      if (tier === "wealth") return "Wealth Builder";
+      if (tier === "catalyst") return "Community Catalyst";
+      return "Foundation Builder";
+    }
+
+    /************ DOM refs ************/
+    const elName = document.getElementById("userNameInput");
+    const elTier = document.getElementById("tierSelect");
+    const elIncomeTarget = document.getElementById("incomeTargetInput");
+    const elSavingsTarget = document.getElementById("savingsTargetInput");
+    const elChipAutoRule = document.getElementById("chipAutoRule");
+    const elChipBillStatus = document.getElementById("chipBillStatus");
+    const elChipDebtStatus = document.getElementById("chipDebtStatus");
+    const elTierSummaryPill = document.getElementById("tierSummaryPill");
+    const elTierSummaryText = document.getElementById("tierSummaryText");
+
+    const elFoundationScore = document.getElementById("foundationScore");
+    const elFoundationLabel = document.getElementById("foundationLabel");
+    const elScoreBarInner = document.getElementById("scoreBarInner");
+    const elSavingsRateText = document.getElementById("savingsRateText");
+    const elSavingsRateSub = document.getElementById("savingsRateSub");
+    const elEssPctLabel = document.getElementById("essentialsPctLabel");
+    const elSavePctLabel = document.getElementById("savePctLabel");
+    const elDebtPctLabel = document.getElementById("debtPctLabel");
+    const elPlayPctLabel = document.getElementById("playPctLabel");
+
+    const elQuickType = document.getElementById("quickType");
+    const elQuickAmount = document.getElementById("quickAmount");
+    const elQuickCategory = document.getElementById("quickCategory");
+    const elQuickNote = document.getElementById("quickNote");
+    const elQuickAccount = document.getElementById("quickAccount");
+    const elBtnQuickAdd = document.getElementById("btnQuickAdd");
+
+    const elMonthLabel = document.getElementById("monthLabel");
+    const elCashFlowFlag = document.getElementById("cashFlowFlag");
+    const elCashFlowFlagText = document.getElementById("cashFlowFlagText");
+    const elBarIncome = document.getElementById("barIncome");
+    const elBarEss = document.getElementById("barEssentials");
+    const elBarSave = document.getElementById("barSavings");
+    const elBarDebt = document.getElementById("barDebt");
+    const elNetFlowPill = document.getElementById("netFlowPill");
+    const elRunwayPill = document.getElementById("runwayPill");
+    const elAutoPilotPill = document.getElementById("autoPilotPill");
+
+    const elAccountsTableBody = document.querySelector("#accountsTable tbody");
+
+    const elRuleEss = document.getElementById("ruleEssentials");
+    const elRuleSave = document.getElementById("ruleSavings");
+    const elRuleDebt = document.getElementById("ruleDebt");
+    const elRulePlay = document.getElementById("rulePlay");
+    const elRuleSumText = document.getElementById("ruleSumText");
+    const elAllocationPreviewRow = document.getElementById("allocationPreviewRow");
+    const elBtnRulesPreset = document.getElementById("btnUpdateRules");
+    const elBtnSimulateAllocation = document.getElementById("btnSimulateAllocation");
+
+    const elTxTableBody = document.querySelector("#transactionsTable tbody");
+    const elExportBox = document.getElementById("exportBox");
+    const elBtnExport = document.getElementById("btnExport");
+
+    const elBtnReset = document.getElementById("btnReset");
+    const elBtnHardReset = document.getElementById("btnHardReset");
+    const elBtnAddAccount = document.getElementById("btnAddAccount");
+
+    const elEssPctLabelInner = document.getElementById("essentialsPctLabel");
+    const elSavePctLabelInner = document.getElementById("savePctLabel");
+    const elDebtPctLabelInner = document.getElementById("debtPctLabel");
+    const elPlayPctLabelInner = document.getElementById("playPctLabel");
+
+    /************ Renderers ************/
+    function renderProfile() {
+      const u = state.user;
+      elName.value = u.name || "";
+      elTier.value = u.tier || "foundation";
+      elIncomeTarget.value = u.incomeTarget || "";
+      elSavingsTarget.value = u.savingsTargetPct || "";
+
+      elTierSummaryText.textContent = tierText(u.tier);
+
+      if (u.tier === "catalyst") {
+        elTierSummaryPill.style.borderColor = "#38bdf8";
+      } else if (u.tier === "wealth") {
+        elTierSummaryPill.style.borderColor = "#22c55e";
+      } else {
+        elTierSummaryPill.style.borderColor = "rgba(148,163,184,0.4)";
+      }
+    }
+
+    function renderRules() {
+      const r = state.rules;
+      elRuleEss.value = r.essentials;
+      elRuleSave.value = r.savings;
+      elRuleDebt.value = r.debt;
+      elRulePlay.value = r.play;
+
+      elEssPctLabelInner.textContent = r.essentials + "%";
+      elSavePctLabelInner.textContent = r.savings + "%";
+      elDebtPctLabelInner.textContent = r.debt + "%";
+      elPlayPctLabelInner.textContent = r.play + "%";
+
+      const sum = r.essentials + r.savings + r.debt + r.play;
+      elRuleSumText.textContent = "Current: " + sum + "%";
+      elRuleSumText.style.color = sum === 100 ? "#bbf7d0" : "#fecaca";
+
+      elChipAutoRule.textContent = `${r.essentials}/${r.savings}/${r.debt}/${r.play} autopilot`;
+
+      renderAllocationPreview();
+    }
+
+    function renderAllocationPreview() {
+      const r = state.rules;
+      const stats = calcMonthlyStats();
+      const monthlyIncome = stats.income || state.user.incomeTarget || 0;
+      if (!monthlyIncome) {
+        elAllocationPreviewRow.innerHTML = "<span class='pill helper-text'>Add income to see autopilot plan.</span>";
+        return;
+      }
+      const e = monthlyIncome * (r.essentials / 100);
+      const s = monthlyIncome * (r.savings / 100);
+      const d = monthlyIncome * (r.debt / 100);
+      const p = monthlyIncome * (r.play / 100);
+
+      elAllocationPreviewRow.innerHTML = `
+        <span class="pill highlight">Essentials: <span class="mono">${formatMoney(e)}</span></span>
+        <span class="pill highlight">Save/Invest: <span class="mono">${formatMoney(s)}</span></span>
+        <span class="pill highlight">Debt: <span class="mono">${formatMoney(d)}</span></span>
+        <span class="pill">Play/Giving: <span class="mono">${formatMoney(p)}</span></span>
+      `;
+    }
+
+    function renderFoundation() {
+      const stats = calcMonthlyStats();
+      const score = calcFoundationScore(stats);
+
+      elFoundationScore.textContent = String(score);
+      elFoundationLabel.textContent = foundationLabel(score);
+      elScoreBarInner.style.width = score + "%";
+
+      const sr = stats.savingsRate;
+      elSavingsRateText.textContent = isNaN(sr) ? "--%" : sr.toFixed(0) + "%";
+      elSavingsRateSub.textContent = "of monthly income";
+
+      const rules = state.rules;
+      const targetSavingsPlusDebt = state.user.savingsTargetPct || 30;
+      const actual = sr || 0;
+      if (actual >= targetSavingsPlusDebt) {
+        elCashFlowFlagText.textContent = "On plan";
+        elCashFlowFlag.classList.remove("warn");
+      } else {
+        elCashFlowFlagText.textContent = "Below target";
+      }
+
+      // Bill and debt chips
+      const essentialsPct = stats.income > 0 ? (stats.essentials / stats.income) * 100 : 0;
+      if (essentialsPct <= rules.essentials + 5) {
+        elChipBillStatus.textContent = "Bills covered within plan";
+      } else if (essentialsPct === 0) {
+        elChipBillStatus.textContent = "Add rent, food, transit";
+      } else {
+        elChipBillStatus.textContent = "Essentials eating plan";
+      }
+
+      const debtShare = stats.income > 0 ? (stats.debt / stats.income) * 100 : 0;
+      if (debtShare >= rules.debt) {
+        elChipDebtStatus.textContent = "Debt plan active";
+      } else if (stats.debt > 0) {
+        elChipDebtStatus.textContent = "Underpaying debt vs plan";
+      } else {
+        elChipDebtStatus.textContent = "No debt payments logged";
+      }
+    }
+
+    function renderCashflow() {
+      const stats = calcMonthlyStats();
+      const monthName = new Date().toLocaleString(undefined, { month: "long", year: "numeric" });
+      elMonthLabel.textContent = monthName + " snapshot";
+
+      const income = stats.income;
+      const essentials = stats.essentials;
+      const savings = stats.savings;
+      const debt = stats.debt;
+
+      const max = Math.max(income, essentials + savings + debt, 1);
+      elBarIncome.style.height = (income / max) * 100 + "%";
+      elBarEss.style.height = (essentials / max) * 100 + "%";
+      elBarSave.style.height = (savings / max) * 100 + "%";
+      elBarDebt.style.height = (debt / max) * 100 + "%";
+
+      const net = stats.net;
+      const avgExpenses = stats.expense || 1;
+      const totalPositiveBalances = state.accounts
+        .filter(a => a.balance > 0)
+        .reduce((sum, a) => sum + a.balance, 0);
+      const runway = totalPositiveBalances > 0 ? (totalPositiveBalances / avgExpenses) : 0;
+
+      elNetFlowPill.textContent = `Net cashflow: ${formatMoney(net)}`;
+      elRunwayPill.textContent = runway > 0 ? `Runway: ${runway.toFixed(1)} months` : "Runway: N/A";
+
+      if (net >= 0 && stats.savingsRate >= (state.user.savingsTargetPct || 30)) {
+        elAutoPilotPill.textContent = "Autopilot: tracking";
+      } else if (net >= 0) {
+        elAutoPilotPill.textContent = "Autopilot: bump savings";
+      } else {
+        elAutoPilotPill.textContent = "Autopilot: plug leaks";
+      }
+
+      // Flag pill styling
+      if (net < 0) {
+        elCashFlowFlag.classList.add("warn");
+        elCashFlowFlagText.textContent = "Losing ground";
+        elCashFlowFlag.querySelector(".dot").classList.add("warn");
+      } else {
+        elCashFlowFlag.classList.remove("warn");
+        elCashFlowFlag.querySelector(".dot").classList.remove("warn");
+      }
+    }
+
+    function renderAccounts() {
+      elAccountsTableBody.innerHTML = "";
+      for (const acc of state.accounts) {
+        const tr = document.createElement("tr");
+        tr.innerHTML = `
+          <td>${acc.name}</td>
+          <td class="text-muted">${acc.type}</td>
+          <td class="text-right mono ${acc.balance < 0 ? "text-danger" : ""}">
+            ${formatMoney(acc.balance)}
+          </td>
+        `;
+        elAccountsTableBody.appendChild(tr);
+      }
+
+      // update quick account options
+      elQuickAccount.innerHTML = "";
+      for (const acc of state.accounts) {
+        const opt = document.createElement("option");
+        opt.value = acc.id;
+        opt.textContent = `${acc.name} (${acc.type})`;
+        elQuickAccount.appendChild(opt);
+      }
+    }
+
+    function renderQuickCategoryOptions() {
+      elQuickCategory.innerHTML = "";
+      const type = elQuickType.value;
+      const filtered = categories.filter(c => c.type === type);
+      for (const c of filtered) {
+        const opt = document.createElement("option");
+        opt.value = c.id;
+        opt.textContent = c.label;
+        elQuickCategory.appendChild(opt);
+      }
+    }
+
+    function renderTransactions() {
+      elTxTableBody.innerHTML = "";
+      const txs = [...state.transactions].sort((a, b) => (a.date < b.date ? 1 : -1));
+      const maxRows = 15;
+      let count = 0;
+      for (const t of txs) {
+        if (count++ >= maxRows) break;
+        const tr = document.createElement("tr");
+        const cat = categories.find(c => c.id === t.categoryId);
+        const catLabel = cat ? cat.label : t.categoryId || "-";
+        let badgeClass = "badge-transfer";
+        if (t.type === "income") badgeClass = "badge-income";
+        if (t.type === "expense") badgeClass = "badge-expense";
+
+        tr.innerHTML = `
+          <td class="mono">${t.date}</td>
+          <td><span class="badge ${badgeClass}">${t.type}</span></td>
+          <td class="text-muted">${catLabel}</td>
+          <td class="text-muted">${t.note || ""}</td>
+          <td class="text-right mono">${formatMoney(t.amount)}</td>
+        `;
+        elTxTableBody.appendChild(tr);
+      }
+    }
+
+    function renderAll() {
+      renderProfile();
+      renderRules();
+      renderQuickCategoryOptions();
+      renderAccounts();
+      renderTransactions();
+      renderCashflow();
+      renderFoundation();
+    }
+
+    /************ Actions ************/
+    function addTransactionFromQuick() {
+      const type = elQuickType.value;
+      const amount = parseFloat(elQuickAmount.value);
+      const categoryId = elQuickCategory.value;
+      const note = elQuickNote.value.trim();
+      const accountId = elQuickAccount.value;
+
+      if (!amount || amount <= 0 || !categoryId || !accountId) {
+        alert("Add an amount, a category, and an account.");
+        return;
+      }
+
+      const newTx = {
+        id: "t" + Date.now(),
+        date: todayISO(),
+        type,
+        categoryId,
+        amount,
+        note,
+        accountId,
+      };
+      state.transactions.push(newTx);
+
+      // adjust account balance
+      const acc = state.accounts.find(a => a.id === accountId);
+      if (acc) {
+        if (type === "income") acc.balance += amount;
+        if (type === "expense") acc.balance -= amount;
+        // transfer not fully implemented splits; for MVP, treat as expense
+        if (type === "transfer") acc.balance -= amount;
+      }
+
+      saveState();
+      elQuickAmount.value = "";
+      elQuickNote.value = "";
+      renderAccounts();
+      renderTransactions();
+      renderCashflow();
+      renderFoundation();
+    }
+
+    function updateUserFromInputs() {
+      state.user.name = elName.value.trim() || "Guest";
+      state.user.tier = elTier.value;
+      const incomeVal = parseFloat(elIncomeTarget.value);
+      const savTarget = parseFloat(elSavingsTarget.value);
+      if (!isNaN(incomeVal)) state.user.incomeTarget = incomeVal;
+      if (!isNaN(savTarget)) state.user.savingsTargetPct = savTarget;
+      saveState();
+      renderProfile();
+      renderCashflow();
+      renderFoundation();
+      renderAllocationPreview();
+    }
+
+    function updateRulesFromInputs() {
+      const e = parseFloat(elRuleEss.value) || 0;
+      const s = parseFloat(elRuleSave.value) || 0;
+      const d = parseFloat(elRuleDebt.value) || 0;
+      const p = parseFloat(elRulePlay.value) || 0;
+      state.rules = {
+        essentials: e,
+        savings: s,
+        debt: d,
+        play: p,
+      };
+      saveState();
+      renderRules();
+      renderFoundation();
+      renderCashflow();
+    }
+
+    function applyPresetRules() {
+      state.rules = {
+        essentials: 50,
+        savings: 20,
+        debt: 20,
+        play: 10,
+      };
+      saveState();
+      renderRules();
+    }
+
+    function simulateAllocation() {
+      const stats = calcMonthlyStats();
+      const monthlyIncome = stats.income || state.user.incomeTarget || 0;
+      if (!monthlyIncome) {
+        alert("Add income or set a monthly income target first.");
+        return;
+      }
+      renderAllocationPreview();
+      alert("Autopilot simulation updated below based on your current income.");
+    }
+
+    function exportJSON() {
+      const snapshot = {
+        user: state.user,
+        rules: state.rules,
+        accounts: state.accounts,
+        transactions: state.transactions,
+        exportedAt: new Date().toISOString(),
+      };
+      const text = JSON.stringify(snapshot, null, 2);
+      elExportBox.style.display = "block";
+      elExportBox.textContent = text;
+    }
+
+    function addAccountInteractive() {
+      const name = prompt("Account name (e.g., Cash, Joint Account):");
+      if (!name) return;
+      const type = prompt("Account type (e.g., Checking, Savings, Debt, Investment):") || "Checking";
+      const balanceStr = prompt("Starting balance (can be negative for debt):", "0");
+      const balance = parseFloat(balanceStr || "0") || 0;
+
+      const acc = {
+        id: "acc_" + Date.now(),
+        name,
+        type,
+        balance,
+      };
+      state.accounts.push(acc);
+      saveState();
+      renderAccounts();
+      renderCashflow();
+      renderFoundation();
+    }
+
+    /************ Event listeners ************/
+    elBtnQuickAdd.addEventListener("click", addTransactionFromQuick);
+    elQuickType.addEventListener("change", renderQuickCategoryOptions);
+    elName.addEventListener("change", updateUserFromInputs);
+    elTier.addEventListener("change", updateUserFromInputs);
+    elIncomeTarget.addEventListener("change", updateUserFromInputs);
+    elSavingsTarget.addEventListener("change", updateUserFromInputs);
+
+    elRuleEss.addEventListener("change", updateRulesFromInputs);
+    elRuleSave.addEventListener("change", updateRulesFromInputs);
+    elRuleDebt.addEventListener("change", updateRulesFromInputs);
+    elRulePlay.addEventListener("change", updateRulesFromInputs);
+    elBtnRulesPreset.addEventListener("click", () => {
+      applyPresetRules();
+      alert("50/20/20/10 rules applied.");
+    });
+    elBtnSimulateAllocation.addEventListener("click", simulateAllocation);
+
+    elBtnExport.addEventListener("click", exportJSON);
+    elBtnReset.addEventListener("click", () => {
+      if (confirm("Reset to demo data but keep this browser's storage?")) {
+        softResetDemo();
+      }
+    });
+    elBtnHardReset.addEventListener("click", () => {
+      if (confirm("This will wipe all local MindYours data for this browser. Continue?")) {
+        hardReset();
+      }
+    });
+    elBtnAddAccount.addEventListener("click", addAccountInteractive);
+
+    /************ Init ************/
+    renderAll();
+  </script>
+</body>
+</html>
